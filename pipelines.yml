@@ -14,7 +14,7 @@ resources:
       buildName: mvntest
 
 pipelines:
-  - name: 1pipeline1
+  - name: pipeline_mvn
     steps:
       - name: mvnBuild_1
         type: MvnBuild
