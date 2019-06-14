@@ -37,7 +37,7 @@ pipelines:
 #                 options: ""
         execution:
           onStart:
-            - javac -version
+            - java -version
             - mvn --version
           onSuccess:
             - send_notifications bindu_slack
