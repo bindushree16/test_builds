@@ -13,7 +13,7 @@ resources:
       buildNumber: 1
       buildName: mvntest
 
-pipeline
+pipeline:
   - name: 1pipeline1
     steps:
       - name: mvnBuild_1
