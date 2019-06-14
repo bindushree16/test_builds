@@ -1,43 +1,37 @@
 resources:
-  - name: gitResource1
+  - name: mynpm_project
     type: GitRepo
-#     repoPath: bindushree16/test_c7java
     configuration:
       gitProvider: bindu_github
-      path: bindushree16/test_c7java
-      branches:
-        only: master
-      buildOn:
-         commit: false  
-    version:
-      sha: master
+      path: bindushree16/test
+      sha: test_builds
       
+  - name: npm_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: mynpm-testing
+
 pipelines:
-  - name: pipeline1
+  - name: testing_pipeline
     steps:
-      - name: test1
-        type: Bash
+      - name: start_npm_build
+        type: NpmBuild
         configuration:
-          nodePool: bindu_testnode
+          repositoryName: bindu_test
+          sourceLocation: .
           inputResources:
-            - name: gitResource1
-          runtime:
-            type: host
-        execution:
-          onExecute:
-            - echo "hi"
+            - name: mynpm_project
+          integrations:
+            - name: bindu_arti
             
-      - name: test2
-        type: Bash
+      - name: start_npm_pub_autopub_true
+        type: NpmPublish
         configuration:
-          nodePool: bindu_testnode           
+          repositoryName: bindu_test
+          autoPublishBuildInfo: true
           inputSteps:
-            - name: test1  
-          runtime:
-            type: image
-            image:
-              auto:
-                language: java
-        execution:
-          onExecute:
-            - echo "hi"
+            - name: start_npm_build
+          outputResources:
+            - name: npm_build_info
