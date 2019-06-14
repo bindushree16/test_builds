@@ -32,7 +32,7 @@ pipelines:
             type: image
             image:
               custom:
-                name: drydock/u18java
+                name: drydock/u16java
                 tag: master
                 options: ""
         execution:
