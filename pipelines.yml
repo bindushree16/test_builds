@@ -20,7 +20,7 @@ pipelines:
         type: MvnBuild
         configuration:
           sourceLocation: ./artifactory-maven-plugin-example
-          mvnCommand: mvn clean install
+          mvnCommand: clean install -f ./pom.xml
           configFileLocation: .
           configFileName: mvn-art-config
           inputResources:
@@ -28,13 +28,13 @@ pipelines:
           integrations:
             - name: bindu_arti
             - name: bindu_slack
-          runtime:            
-            type: image
-            image:
-              custom:
-                name: drydock/u16java
-                tag: master
-                options: ""
+#           runtime:            
+#             type: image
+#             image:
+#               custom:
+#                 name: drydock/u16java
+#                 tag: master
+#                 options: ""
         execution:
           onStart:
             - javac -version
