@@ -4,9 +4,11 @@ resources:
     configuration:
       path: bindushree16/test_builds
       gitProvider: bindu_github
+      branches:
+        include: dockerbuild
 #       buildOn:
 #          commit: false
-      sha: dockerbuild   
+#       sha: dockerbuild   
 
 
 pipelines: 
