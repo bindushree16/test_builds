@@ -1,5 +1,5 @@
 resources:
-  - name: dockerbuild_Repo1
+  - name: dockerbuild_Repo11
     type: GitRepo
     configuration:
       path: bindushree16/test_builds
@@ -25,10 +25,11 @@ pipelines:
           integrations:
             - name: bindu_arti
           inputResources:
-            - name: dockerbuild_Repo1     # required
+            - name: dockerbuild_Repo11     # required
 #             - artifactoryFileSpec      # optional
 #             - my_docker_image      # optional if base image is private
         execution:
+          onExecute:
             - $res_dockerbuild_Repo1_resourcePath
             - ls -la
             
