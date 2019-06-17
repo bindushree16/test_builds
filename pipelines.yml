@@ -6,9 +6,9 @@ resources:
       gitProvider: bindu_github
       branches:
         include: dockerbuild
-      buildOn:
-         commit: false
-#       sha: dockerbuild   
+#       buildOn:
+#          commit: false
+       sha: dockerbuild   
 
 
 pipelines: 
