@@ -31,7 +31,7 @@ pipelines:
         execution:
           onStart:
             - ls -la
-            - $res_dockerbuild_Repo11_resourcePath
+            - pushd $res_dockerbuild_Repo11_resourcePath
             - ls -la
             
     
