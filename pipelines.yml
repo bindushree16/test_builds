@@ -18,7 +18,7 @@ pipelines:
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
-          dockerImageName: 34.66.110.173:8081/bindu_test/myimg # required 
+          dockerImageName: 34.66.110.173:8081/bindu_test/ubuntu # required 
           dockerImageTag: latest    # required
           integrations:
             - name: bindu_arti
