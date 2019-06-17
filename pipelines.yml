@@ -29,7 +29,7 @@ pipelines:
 #             - artifactoryFileSpec      # optional
 #             - my_docker_image      # optional if base image is private
         execution:
-          onExecute:
+          onStart:
             - $res_dockerbuild_Repo1_resourcePath
             - ls -la
             
