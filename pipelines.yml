@@ -4,8 +4,8 @@ resources:
     configuration:
       path: bindushree16/test_builds
       gitProvider: bindu_github
-      buildOn:
-         commit: false
+#       buildOn:
+#          commit: false
       sha: dockerbuild   
 
 
