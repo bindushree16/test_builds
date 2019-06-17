@@ -19,6 +19,6 @@ pipelines:
           dockerImageName: 34.66.110.173:8081/bindu_test/myimg # required 
           dockerImageTag: latest    # required
           inputResources:
-#             - artifactoryFileSpec      # optional
             - dockerbuild_Repo     # required
+#             - artifactoryFileSpec      # optional
 #             - my_docker_image      # optional if base image is private
