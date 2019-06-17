@@ -30,6 +30,7 @@ pipelines:
 #             - my_docker_image      # optional if base image is private
         execution:
           onStart:
+            - printenv
             - ls -la
             - pushd $res_dockerbuild_Repo11_resourcePath
             - ls -la
