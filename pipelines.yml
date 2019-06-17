@@ -30,7 +30,7 @@ pipelines:
 #             - my_docker_image      # optional if base image is private
         execution:
           onStart:
-            - $res_dockerbuild_Repo1_resourcePath
+            - $res_dockerbuild_Repo11_resourcePath
             - ls -la
             
     
