@@ -5,7 +5,9 @@ resources:
       path: bindushree16/test_builds
       gitProvider: bindu_github
       buildOn:
-         commit: false 
+         commit: false
+      sha: dockerbuild   
+
 
 pipelines: 
   - name: pipee1
