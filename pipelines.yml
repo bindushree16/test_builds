@@ -21,6 +21,6 @@ pipelines:
           integrations:
             - name: bindu_arti
           inputResources:
-            - dockerbuild_Repo     # required
+            - name: dockerbuild_Repo     # required
 #             - artifactoryFileSpec      # optional
 #             - my_docker_image      # optional if base image is private
