@@ -62,7 +62,6 @@ pipelines:
         type: PublishBuildInfo
         configuration:
           #inherits from bash
-          targetRepository: bindu_local
           integrations:
             - name: bindu_arti     # required
           inputSteps:
