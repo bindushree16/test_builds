@@ -19,7 +19,7 @@ resources:
 
 
 pipelines: 
-  - name: pipee1
+  - name: pip
     steps:
       - name: test_dockerBuild
         type: DockerBuild
