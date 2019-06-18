@@ -24,7 +24,7 @@ pipelines:
       - name: test_dockerBuild
         type: DockerBuild
         configuration:
-          nodePool: test_u16
+          nodePool: tr_u16
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
@@ -49,7 +49,7 @@ pipelines:
       - name: test_dockerPush
         type: DockerPush
         configuration:
-          nodePool: test_u16
+          nodePool: tr_u16
           targetRepository: bindu_test  #required
           integrations:
             - name: bindu_arti     # required
