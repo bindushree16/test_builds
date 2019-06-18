@@ -15,7 +15,14 @@ resources:
     configuration:
       sourceArtifactory: bindu_arti
       buildNumber: 1
-      buildName: dockertest    
+      buildName: dockertest  
+      
+  - name: docker_buildpromote
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: dockertest
 
 
 pipelines: 
@@ -57,8 +64,10 @@ pipelines:
             - name: test_dockerBuild     # required
 #           outputResources:
 #             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
+
+#for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
             
-      - name: test_dockerpublish
+      - name: test_dockerPublish
         type: PublishBuildInfo
         configuration:
           #inherits from bash
@@ -67,7 +76,17 @@ pipelines:
           inputSteps:
             - name: test_dockerPush     # required
           outputResources:
-            - name: docker_Buildinfo       
+            - name: docker_Buildinfo  
+            
+      - name: test_dockerPromote
+        type: PromoteBuild
+        configuration:
+          targetRepository: bindu_local
+          inputResources:
+            - name: docker_Buildinfo
+          outputResources:
+            - name: docker_buildpromote
+           
             
     
  
