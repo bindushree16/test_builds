@@ -65,7 +65,7 @@ pipelines:
 #           integrations:
 #             - name: bindu_arti     # required
           inputSteps:
-            - name: test_dockerBuild  #test_dockerPush     # required
+            - name: test_dockerPush     # required
           outputResources:
             - name: docker_Buildinfo       
             
