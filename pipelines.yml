@@ -55,8 +55,8 @@ pipelines:
             - name: bindu_arti     # required
           inputSteps:
             - name: test_dockerBuild     # required
-          outputResources:
-            - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
+#           outputResources:
+#             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
             
       - name: test_dockerpublish
         type: PublishBuildInfo
