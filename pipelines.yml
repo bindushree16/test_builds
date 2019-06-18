@@ -28,8 +28,8 @@ pipelines:
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
-          dockerImageName: 34.66.110.173:8081/docker-local/ankul  # required 
-          dockerImageTag: bindu_$pipeline_name.$run_number   # required
+          dockerImageName: 34.66.110.173:8081/bindu_local/bindu  # required 
+          dockerImageTag: myimage_$pipeline_name.$run_number   # required
           integrations:
             - name: bindu_arti
           inputResources:
@@ -50,7 +50,7 @@ pipelines:
         type: DockerPush
         configuration:
           nodePool: tr_u16
-          targetRepository: bindu_test  #required
+          targetRepository: bindu_local  #required
           integrations:
             - name: bindu_arti     # required
           inputSteps:
