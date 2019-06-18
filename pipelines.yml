@@ -24,7 +24,7 @@ pipelines:
       - name: test_dockerBuild
         type: DockerBuild
         configuration:
-          nodePool: tr_u16
+#           nodePool: tr_u16
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
@@ -46,28 +46,29 @@ pipelines:
           onSuccess:
             - docker images  
 
-      - name: test_dockerPush
-        type: DockerPush
+#       - name: test_dockerPush
+#         type: DockerPush
+#         configuration:
+# #           nodePool: tr_u16
+#           targetRepository: bindu_local  #required
+#           integrations:
+#             - name: bindu_arti     # required
+#           inputSteps:
+#             - name: test_dockerBuild     # required
+# #           outputResources:
+# #             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
+            
+      - name: test_dockerpublish
+        type: PublishBuildInfo
         configuration:
-          nodePool: tr_u16
-          targetRepository: bindu_local  #required
+          #inherits from bash
+          targetRepository: bindu_local
           integrations:
             - name: bindu_arti     # required
           inputSteps:
-            - name: test_dockerBuild     # required
-#           outputResources:
-#             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
-            
-#       - name: test_dockerpublish
-#         type: PublishBuildInfo
-#         configuration:
-#           #inherits from bash
-# #           integrations:
-# #             - name: bindu_arti     # required
-#           inputSteps:
-#             - name: test_dockerPush     # required
-#           outputResources:
-#             - name: docker_Buildinfo       
+            - name: test_dockerBuild  #test_dockerPush     # required
+          outputResources:
+            - name: docker_Buildinfo       
             
     
  
