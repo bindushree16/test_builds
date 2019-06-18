@@ -23,6 +23,13 @@ resources:
       sourceArtifactory: bindu_arti
       buildNumber: 1
       buildName: dockertest
+      
+  - name: docker_releaseBundle
+    type: ReleaseBundle
+    configuration:
+      sourceArtifactory: bindu_arti
+      name: test_1
+      version: v1.0.0     
 
 
 pipelines: 
@@ -86,6 +93,25 @@ pipelines:
             - name: docker_Buildinfo
           outputResources:
             - name: docker_buildpromote
+            
+      - name: test_dockerCreatebundle
+        type: CreateReleaseBundle
+        configuration:
+          releaseBundleName: test_new_releaseb
+          releaseBundleVersion: v1.0.0
+          dryRun: false
+          sign: false
+          description: "testdocker description"
+          inputResources:
+            - name: docker_buildpromote
+          outputResources:
+            - name: docker_releaseBundle
+          releaseNotes:
+            syntax: markdown
+            content: |
+              ## Heading
+                * Bullet
+                * Points       
            
             
     
