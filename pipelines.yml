@@ -30,11 +30,13 @@ pipelines:
 #             - my_docker_image      # optional if base image is private
         execution:
           onStart:
-            - echo "hi"
+            - docker images 
             - printenv
             - ls -la
             - pushd $res_dockerbuild_test_resourcePath
             - ls -la
+          onSuccess:
+            - docker images   
             
     
  
