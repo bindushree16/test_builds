@@ -8,7 +8,14 @@ resources:
 #         include: dockerbuild
       buildOn:
          commit: false
-      sha: dockerbuild   
+      sha: dockerbuild  
+      
+  - name: docker_Buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: dockertest    
 
 
 pipelines: 
@@ -36,7 +43,20 @@ pipelines:
             - pushd $res_dockerbuild_test_resourcePath
             - ls -la
           onSuccess:
-            - docker images   
+            - docker images  
+
+      - name: test_dockerPush
+        type: DockerPush
+        configuration:
+          targetRepository: bindu_test #required
+#           forceXrayScan: <boolean>   # default false
+#           autoPublishBuildInfo: <boolean>       # default false
+          integrations:
+            - name: bindu_arti     # required
+          inputSteps:
+            - name: test_dockerBuild     # required
+          outputResources:
+            - name: docker_Buildinfo      # required if autoPublishBuildInfo is true            
             
     
  
