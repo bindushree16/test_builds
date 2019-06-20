@@ -69,6 +69,7 @@ pipelines:
 #             - my_docker_image      # optional if base image is private
         execution:
           onStart:
+            - echo "hi"
             - docker images 
             - printenv
             - ls -la
