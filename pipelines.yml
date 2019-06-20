@@ -29,7 +29,15 @@ resources:
     configuration:
       sourceArtifactory: bindu_arti
       name: test_1
-      version: v1.0     
+      version: v1.0  
+      
+  - name: docker_releaseBundle2
+    type: ReleaseBundle
+    configuration:
+      sourceArtifactory: bindu_arti
+      name: dockertest
+      version: foo
+      isSigned: false     
 
 
 pipelines: 
@@ -112,7 +120,12 @@ pipelines:
               ## Heading
                 * Bullet
                 * Points       
-           
-            
-    
+                 
+      - name: test_dockersign
+        type: SignReleaseBundle
+        configuration:
+          inputResources:
+            - name: docker_releaseBundle
+          outputResources:
+            - name: docker_releaseBundle2
  
