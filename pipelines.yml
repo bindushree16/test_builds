@@ -8,7 +8,7 @@ resources:
         include: dockerbuild
       buildOn:
          commit: false
-      sha: dockerbuild  
+#       sha: dockerbuild  
       
   - name: docker_Buildinfo
     type: BuildInfo
