@@ -39,6 +39,15 @@ resources:
       version: foo
       isSigned: false     
 
+  - name: docker_distribution
+    type: DistributionRule
+    configuration:
+      sourceArtifactory: bindu_arti
+      cityName: "*"
+      serviceName: "*"
+      siteName: "*"
+      countryCodes:
+        - CN
 
 pipelines: 
   - name: pip
@@ -124,11 +133,20 @@ pipelines:
                 * Bullet
                 * Points       
                  
-      - name: test_dockersign
+      - name: test_dockerSign
         type: SignReleaseBundle
         configuration:
           inputResources:
             - name: docker_releaseBundle
           outputResources:
             - name: docker_releaseBundle2
+            
+      - name: test_dockerDistribute
+        type: DistributeReleaseBundle
+        configuration:
+          nodePool: ubuntu16
+          dryRun: false
+          inputResources:
+            - name: docker_distribution
+            - name: docker_releaseBundle2       
  
