@@ -25,6 +25,10 @@ pipelines:
             - name: mynpm_project
           integrations:
             - name: bindu_arti
+        execution:
+          onStart:
+            - ls -la
+            - pushd $res_mynpm_project_resourcePath    
             
       - name: start_npm_pub_autopub_true
         type: NpmPublish
