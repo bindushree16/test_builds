@@ -4,7 +4,13 @@ resources:
     configuration:
       gitProvider: bindu_github
       path: bindushree16/test_builds
-      sha: npmbuild
+
+  - name: mymvn
+    type: GitRepo
+    configuration:
+      gitProvider: bindu_github
+      path: bindushree16/j-sample-node 
+      
       
   - name: npm_build_info
     type: BuildInfo
@@ -22,7 +28,7 @@ pipelines:
           repositoryName: bindu_mvn_local
           sourceLocation: .
           inputResources:
-            - name: mynpm_project
+            - name: mymvn
           integrations:
             - name: bindu_arti
         execution:
