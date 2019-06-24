@@ -19,7 +19,7 @@ pipelines:
       - name: start_npm_build
         type: NpmBuild
         configuration:
-          repositoryName: bindu_local
+          repositoryName: bindu_mvn_local
           sourceLocation: .
           inputResources:
             - name: mynpm_project
@@ -29,7 +29,7 @@ pipelines:
       - name: start_npm_pub_autopub_true
         type: NpmPublish
         configuration:
-          repositoryName: bindu_local
+          repositoryName: bindu_mvn_local
           autoPublishBuildInfo: true
           inputSteps:
             - name: start_npm_build
