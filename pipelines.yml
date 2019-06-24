@@ -35,3 +35,5 @@ pipelines:
             - name: start_npm_build
           outputResources:
             - name: npm_build_info
+          integrations:
+            - name: bindu_arti
