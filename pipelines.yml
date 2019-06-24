@@ -3,7 +3,7 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: bindu_github
-      path: bindushree16/test
+      path: bindushree16/test_builds
       sha: npmbuild
       
   - name: npm_build_info
