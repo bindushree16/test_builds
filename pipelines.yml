@@ -78,7 +78,8 @@ pipelines:
           inputResources:
             - name: npm_build_info
           outputResources:
-            - name: npm_build_promote  
+            - name: npm_build_promote 
+            
             
       - name: npm_Bundle
         type: CreateReleaseBundle
