@@ -49,7 +49,7 @@ pipelines:
           repositoryName: bindu_mvn_local
           autoPublishBuildInfo: true
           inputSteps:
-            - name: start_npm_build
+            - name: npm_Build
           outputResources:
             - name: npm_build_info
           integrations:
