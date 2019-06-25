@@ -19,10 +19,17 @@ resources:
       buildNumber: 1
       buildName: mynpm-testing
 
+  - name: npm_build_promote
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: npmbuild-testing
+
 pipelines:
   - name: npm_pipeline
     steps:
-      - name: start_npm_build
+      - name: npm_Build
         type: NpmBuild
         configuration:
           repositoryName: bindu_mvn_local
@@ -36,7 +43,7 @@ pipelines:
 #             - ls -la
 #             - pushd $res_mynpm_project_resourcePath    
             
-      - name: start_npm_pub_autopub_true
+      - name: npm_Pub
         type: NpmPublish
         configuration:
           repositoryName: bindu_mvn_local
@@ -47,3 +54,12 @@ pipelines:
             - name: npm_build_info
           integrations:
             - name: bindu_arti
+            
+      - name: npm_Promote
+        type: PromoteBuild
+        configuration:
+          targetRepository: bindu_mvn_local
+          inputResources:
+            - name: npm_build_info
+          outputResources:
+            - name: npm_build_promote         
