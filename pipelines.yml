@@ -39,7 +39,7 @@ resources:
     configuration:
       sourceArtifactory: bindu_arti
       name: npmsign
-      version: v1.0
+      version: v1.0.1
       isSigned: false      
 
 pipelines:
