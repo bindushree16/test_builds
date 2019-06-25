@@ -94,7 +94,10 @@ pipelines:
           inputResources:
             - name: npm_build_promote 
           outputResources:
-            - name: npm_releaseBundle    
+            - name: npm_releaseBundle 
+        execution:
+          onSuccess:
+            - printenv    
             
       - name: npm_SignBundle
         type: SignReleaseBundle
