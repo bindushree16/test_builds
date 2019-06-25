@@ -34,7 +34,7 @@ resources:
       version: v1.1.0
       isSigned: false 
       
-  - name: my_signedBundle
+  - name: npm_signedBundle
     type: ReleaseBundle
     configuration:
       sourceArtifactory: bindu_arti
@@ -100,4 +100,4 @@ pipelines:
             - name: npm_releaseBundle  # one ReleaseBundle is mandatory
               #trigger: false    # default true
           outputResources:
-            - name: my_signedBundle    # ReleaseBundle resource         
+            - name: npm_signedBundle    # ReleaseBundle resource         
