@@ -30,7 +30,7 @@ resources:
     type: ReleaseBundle
     configuration:
       sourceArtifactory: bindu_arti
-      name: npmrelease
+      name: bindu_mvn_local
       version: v1.1.0
       isSigned: false 
       
