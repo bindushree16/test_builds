@@ -107,3 +107,6 @@ pipelines:
               #trigger: false    # default true
           outputResources:
             - name: npm_signedBundle    # ReleaseBundle resource         
+        execution:
+          onStart:
+            - printenv
