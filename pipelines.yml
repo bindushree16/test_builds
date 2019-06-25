@@ -30,7 +30,7 @@ resources:
     type: ReleaseBundle
     configuration:
       sourceArtifactory: bindu_arti
-      name: npm
+      name: npmrelease
       version: v1.1.0
       isSigned: false 
       
@@ -38,7 +38,7 @@ resources:
     type: ReleaseBundle
     configuration:
       sourceArtifactory: bindu_arti
-      name: ranjan
+      name: npmsign
       version: v1.0.0
       isSigned: false      
 
