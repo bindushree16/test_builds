@@ -84,10 +84,10 @@ pipelines:
       - name: npm_Bundle
         type: CreateReleaseBundle
         configuration:
-          releaseBundleName: bundle_release_bindu
-          releaseBundleVersion: 1.0.1
-#           dryRun: false
-#           sign: false
+          releaseBundleName: bundle_release_exp
+          releaseBundleVersion: 1.0.2
+          dryRun: true
+          sign: true
           releaseNotes:         
             content: bundle_npm 
             syntax:  plain_text 
