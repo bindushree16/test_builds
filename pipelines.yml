@@ -31,7 +31,7 @@ resources:
     configuration:
       sourceArtifactory: bindu_arti
       name: bindu_mvn_local
-      version: v1.1.0
+      version: v1.1.1
       isSigned: false 
       
   - name: npm_signedBundle
