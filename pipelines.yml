@@ -31,8 +31,16 @@ resources:
     configuration:
       sourceArtifactory: bindu_arti
       name: npm
+      version: v1.1.0
+      isSigned: false 
+      
+  - name: my_signedBundle
+    type: ReleaseBundle
+    configuration:
+      sourceArtifactory: bindu_arti
+      name: ranjan
       version: v1.0.0
-      isSigned: false     
+      isSigned: false      
 
 pipelines:
   - name: npm_pipeline
@@ -83,4 +91,13 @@ pipelines:
           inputResources:
             - name: npm_build_promote 
           outputResources:
-            - name: npm_releaseBundle      
+            - name: npm_releaseBundle    
+            
+      - name: npm_SignBundle
+        type: SignReleaseBundle
+        configuration: 
+          inputResources:
+            - name: npm_releaseBundle  # one ReleaseBundle is mandatory
+              #trigger: false    # default true
+          outputResources:
+            - name: my_signedBundle    # ReleaseBundle resource         
