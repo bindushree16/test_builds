@@ -86,6 +86,8 @@ pipelines:
         configuration:
           releaseBundleName: bundle_relese
           releaseBundleVersion: 0.0.1
+          dryRun: false
+          sign: false
           releaseNotes:         
             content: bundle_npm 
             syntax:  plain_text 
