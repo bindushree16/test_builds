@@ -1,5 +1,5 @@
 resources:
-  - name: res_go
+  - name: go_resources 
     type: GitRepo
     configuration:
       path: bindushree16/artifactory-go-example
@@ -56,7 +56,7 @@ pipelines:
           targetRepository: test-go-local 
           deps: all
           inputResources:
-            - name: res_go
+            - name: go_resources 
           integrations:
             - name: bindu_arti
         execution:
