@@ -45,7 +45,7 @@ resources:
 #         - CN
 
 pipelines:
-  - name: go_build
+  - name: go_pip_build
     steps:
       - name: go_build_step
         type: GoPublishModule
