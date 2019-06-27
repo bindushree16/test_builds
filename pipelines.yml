@@ -2,7 +2,15 @@ resources:
   - name: go_resources 
     type: GitRepo
     configuration:
+      gitProvider: bindu_github
       path: bindushree16/artifactory-go-example
+      sha: mvnbuild
+
+resources:
+  - name: go_resources 
+    type: GitRepo
+    configuration:
+      path: bindushree16/go_resources 
       gitProvider: bindu_github
       sha: gobuild
       
