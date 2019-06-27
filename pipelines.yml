@@ -1,112 +1,125 @@
 resources:
-  - name: mynpm_project
+  - name: res_go
     type: GitRepo
     configuration:
+      path: bindushree16/artifactory-go-example
       gitProvider: bindu_github
-      path: bindushree16/test_builds
+      sha: gobuild
 
-  - name: mymvn
-    type: GitRepo
-    configuration:
-      gitProvider: bindu_github
-      path: bindushree16/j-sample-node 
       
-      
-  - name: npm_build_info
+  - name: go_Buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: bindu_arti
+      buildName: go_testbuild
       buildNumber: 1
-      buildName: mynpm-testing
-
-  - name: npm_build_promote
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: bindu_arti
-      buildNumber: 1
-      buildName: npmbuild-testing
       
-  - name: npm_releaseBundle 
-    type: ReleaseBundle
-    configuration:
-      sourceArtifactory: bindu_arti
-      name: bindu_mvn_local
-      version: v1.1.1
-      isSigned: false 
+#   - name: unsigned_release_bundle_go
+#     type: ReleaseBundle
+#     configuration:
+#       sourceArtifactory: varsha_artifactory
+#       name: go_test_bundle
+#       version: v1.7
       
-  - name: npm_signedBundle
-    type: ReleaseBundle
-    configuration:
-      sourceArtifactory: bindu_arti
-      name: npmsign
-      version: v1.0.1
-      isSigned: true       
+#   - name: signed_release_bundle_go
+#     type: ReleaseBundle
+#     configuration:
+#       sourceArtifactory: varsha_artifactory
+#       name: go_test_bundle
+#       version: v1.7
+      
+#   - name: promoted_go_build_info_go
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: varsha_artifactory
+#       buildName: promote_go_build
+#       buildNumber: 1
+      
+#   - name: distribution_rule_go
+#     type: DistributionRule
+#     configuration:
+#       sourceArtifactory: varsha_artifactory
+#       cityName: "*"
+#       serviceName: "*"
+#       siteName: "*"
+#       countryCodes:
+#         - CN
 
 pipelines:
-  - name: npm_pipeline
+  - name: go_build
     steps:
-      - name: npm_Build
-        type: NpmBuild
+      - name: go_build_step
+        type: GoPublishModule
         configuration:
-          repositoryName: bindu_mvn_local
+          nodePool: ubuntu16
           sourceLocation: .
+          version: v1.0.0         
+          targetRepository: test-go-local 
+          deps: all
           inputResources:
-            - name: mymvn
+            - name: res_go
           integrations:
             - name: bindu_arti
         execution:
           onStart:
-            - ls -la
-#             - pushd $res_mynpm_project_resourcePath    
-            
-      - name: npm_Pub
-        type: NpmPublish
+            - wget https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz
+            - sudo tar -C /usr/local -xzf go1.12.6.linux-amd64.tar.gz
+            - export PATH=$PATH:/usr/local/go/bin
+            - go version
+   
+      - name: publish_build_info
+        type: PublishBuildInfo
         configuration:
-          repositoryName: bindu_mvn_local
-          autoPublishBuildInfo: true
+          nodePool: ubuntu16
           inputSteps:
-            - name: npm_Build
+            - name: go_build_step
           outputResources:
-            - name: npm_build_info
-          integrations:
-            - name: bindu_arti
+            - name: go_Buildinfo
+
+#       - name: promote_build_go
+#         type: PromoteBuild
+#         configuration:
+#           nodePool: ubuntu16
+#           targetRepository: vijay-go-local
+#           integrations:
+#             - name: varsha_artifactory
+#           inputResources:
+#             - name: go_build_info
+#           outputResources:
+#             - name: promoted_go_build_info_go
             
-      - name: npm_Promote
-        type: PromoteBuild
-        configuration:
-          targetRepository: bindu_mvn_local
-          inputResources:
-            - name: npm_build_info
-          outputResources:
-            - name: npm_build_promote 
+#       - name: bundle_go
+#         type: CreateReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           dryRun: false
+# #           description: >-
+# #             This is to test GoPublishModule -> PublishBuildInfo -> Promote ->
+# #             CreateRelease -> Sign -> Distribute pipeline chain
+#           releaseBundleName: go_publish_test_build
+#           releaseBundleVersion: v6.0
+#           sign: false
+#           inputResources:
+#             - name: promoted_go_build_info_go
+#           outputResources:
+#             - name: unsigned_release_bundle_go
             
+#       - name: sign_release_bundle_go
+#         type: SignReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           inputResources:
+#             - name: unsigned_release_bundle_go
+#           outputResources:
+#             - name: signed_release_bundle_go
             
-      - name: npm_Bundle
-        type: CreateReleaseBundle
-        configuration:
-          releaseBundleName: bundle_release_exp
-          releaseBundleVersion: 1.0.2
-          dryRun: false
-          sign: false
-          releaseNotes:         
-            content: bundle_npm 
-            syntax:  plain_text 
-          inputResources:
-            - name: npm_build_promote 
-          outputResources:
-            - name: npm_releaseBundle 
-        execution:
-          onSuccess:
-            - printenv    
-            
-      - name: npm_SignBundle
-        type: SignReleaseBundle
-        configuration: 
-          inputResources:
-            - name: npm_releaseBundle  # one ReleaseBundle is mandatory
-              #trigger: false    # default true
-          outputResources:
-            - name: npm_signedBundle    # ReleaseBundle resource         
-        execution:
-          onStart:
-            - printenv
+#       - name: distribute_signed_release
+#         type: DistributeReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           dryRun: false
+#           inputResources:
+#             - name: signed_release_bundle_go
+#             - name: distribution_rule_go
+#           integrations:              
+#             - name: varsha_artifactory
