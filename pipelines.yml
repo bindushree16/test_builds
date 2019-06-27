@@ -59,7 +59,7 @@ pipelines:
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
-          dockerImageName: 34.66.110.173:8081/bindu_local/bindu  # required 
+          dockerImageName: 34.66.110.173:8081/test-docker-local/bindu  # required 
           dockerImageTag: myimage_$pipeline_name.$run_number   # required
           integrations:
             - name: bindu_arti
@@ -82,7 +82,7 @@ pipelines:
         type: DockerPush
         configuration:
           nodePool: ubuntu16
-          targetRepository: bindu_local  #required
+          targetRepository: test-docker-local  #required
           integrations:
             - name: bindu_arti     # required
           inputSteps:
@@ -108,7 +108,7 @@ pipelines:
         type: PromoteBuild
         configuration:
           nodePool: ubuntu16
-          targetRepository: bindu_local
+          targetRepository: test-docker-local
           inputResources:
             - name: docker_Buildinfo
           outputResources:
