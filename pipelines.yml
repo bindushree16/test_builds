@@ -5,7 +5,6 @@ resources:
       path: bindushree16/artifactory-go-example
       gitProvider: bindu_github
       sha: gobuild
-
       
   - name: go_Buildinfo
     type: BuildInfo
