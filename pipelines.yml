@@ -10,7 +10,7 @@ resources:
          commit: false
 #       sha: dockerbuild  
       
-  - name: docker_Buildinfo
+  - name: docker_Buildinfoo
     type: BuildInfo
     configuration:
       sourceArtifactory: bindu_arti
@@ -50,7 +50,7 @@ resources:
 #         - CN
 
 pipelines: 
-  - name: pip
+  - name: pipoo
     steps:
       - name: test_dockerBuild
         type: DockerBuild
