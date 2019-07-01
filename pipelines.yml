@@ -182,17 +182,17 @@ pipelines:
 #           onExecute:
 #             - echo "hi"
             
-      - name: test2
-        type: Bash
-        configuration:
-          nodePool: bindu_testnode           
-          inputSteps:
-            - name: test1  
-          runtime:
-            type: image
-            image:
-              auto:
-                language: java
-        execution:
-          onExecute:
-            - echo "hi"
+#       - name: test2
+#         type: Bash
+#         configuration:
+#           nodePool: bindu_testnode           
+#           inputSteps:
+#             - name: test1  
+#           runtime:
+#             type: image
+#             image:
+#               auto:
+#                 language: java
+#         execution:
+#           onExecute:
+#             - echo "hi"
