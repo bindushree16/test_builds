@@ -17,37 +17,37 @@ resources:
       buildNumber: 1
       buildName: dockertest  
       
-  - name: docker_buildpromote
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: bindu_arti
-      buildNumber: 1
-      buildName: dockertest
+#   - name: docker_buildpromote
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       buildNumber: 1
+#       buildName: dockertest
       
-  - name: docker_releaseBundle
-    type: ReleaseBundle
-    configuration:
-      sourceArtifactory: bindu_arti
-      name: test_1
-      version: v1.0  
+#   - name: docker_releaseBundle
+#     type: ReleaseBundle
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       name: test_1
+#       version: v1.0  
       
-  - name: docker_releaseBundle2
-    type: ReleaseBundle
-    configuration:
-      sourceArtifactory: bindu_arti
-      name: dockertest
-      version: foo
-      isSigned: false     
+#   - name: docker_releaseBundle2
+#     type: ReleaseBundle
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       name: dockertest
+#       version: foo
+#       isSigned: false     
 
-  - name: docker_distribution
-    type: DistributionRule
-    configuration:
-      sourceArtifactory: bindu_arti
-      cityName: "*"
-      serviceName: "*"
-      siteName: "*"
-      countryCodes:
-        - CN
+#   - name: docker_distribution
+#     type: DistributionRule
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       cityName: "*"
+#       serviceName: "*"
+#       siteName: "*"
+#       countryCodes:
+#         - CN
 
 pipelines: 
   - name: pip
@@ -92,62 +92,62 @@ pipelines:
 
 #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
             
-      - name: test_dockerPublish
-        type: PublishBuildInfo
-        configuration:
-          nodePool: ubuntu16
-          #inherits from bash
-#           integrations:
-#             - name: bindu_arti     # required
-          inputSteps:
-            - name: test_dockerPush     # required
-          outputResources:
-            - name: docker_Buildinfo  
+#       - name: test_dockerPublish
+#         type: PublishBuildInfo
+#         configuration:
+#           nodePool: ubuntu16
+#           #inherits from bash
+# #           integrations:
+# #             - name: bindu_arti     # required
+#           inputSteps:
+#             - name: test_dockerPush     # required
+#           outputResources:
+#             - name: docker_Buildinfo  
             
-      - name: test_dockerPromote
-        type: PromoteBuild
-        configuration:
-          nodePool: ubuntu16
-          targetRepository: test-docker-local
-          inputResources:
-            - name: docker_Buildinfo
-          outputResources:
-            - name: docker_buildpromote
+#       - name: test_dockerPromote
+#         type: PromoteBuild
+#         configuration:
+#           nodePool: ubuntu16
+#           targetRepository: test-docker-local
+#           inputResources:
+#             - name: docker_Buildinfo
+#           outputResources:
+#             - name: docker_buildpromote
             
-      - name: test_dockerCreatebundle
-        type: CreateReleaseBundle
-        configuration:
-          nodePool: ubuntu16
-          releaseBundleName: test_new_releaseb
-          releaseBundleVersion: v1.5
-          dryRun: false
-          sign: false
-          description: "testdocker description"
-          inputResources:
-            - name: docker_buildpromote
-          outputResources:
-            - name: docker_releaseBundle
-          releaseNotes:
-            syntax: markdown
-            content: |
-              ## Heading
-                * Bullet
-                * Points       
+#       - name: test_dockerCreatebundle
+#         type: CreateReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           releaseBundleName: test_new_releaseb
+#           releaseBundleVersion: v1.5
+#           dryRun: false
+#           sign: false
+#           description: "testdocker description"
+#           inputResources:
+#             - name: docker_buildpromote
+#           outputResources:
+#             - name: docker_releaseBundle
+#           releaseNotes:
+#             syntax: markdown
+#             content: |
+#               ## Heading
+#                 * Bullet
+#                 * Points       
                  
-      - name: test_dockerSign
-        type: SignReleaseBundle
-        configuration:
-          inputResources:
-            - name: docker_releaseBundle
-          outputResources:
-            - name: docker_releaseBundle2
+#       - name: test_dockerSign
+#         type: SignReleaseBundle
+#         configuration:
+#           inputResources:
+#             - name: docker_releaseBundle
+#           outputResources:
+#             - name: docker_releaseBundle2
             
-      - name: test_dockerDistribute
-        type: DistributeReleaseBundle
-        configuration:
-          nodePool: ubuntu16
-          dryRun: false
-          inputResources:
-            - name: docker_distribution
-            - name: docker_releaseBundle2       
+#       - name: test_dockerDistribute
+#         type: DistributeReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           dryRun: false
+#           inputResources:
+#             - name: docker_distribution
+#             - name: docker_releaseBundle2       
  
