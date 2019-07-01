@@ -59,7 +59,7 @@ pipelines:
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
-          dockerImageName: 34.66.110.173/test-docker-local/bindu  # required 
+          dockerImageName: 34.66.107.45/test-docker-local/bindu  # required 
           dockerImageTag: myImg_$pipeline_name.$run_number   # required
           integrations:
             - name: bindu_arti
