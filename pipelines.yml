@@ -88,7 +88,7 @@ pipelines:
           inputSteps:
             - name: test_dockerBuild     # required
           outputResources:
-            - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
+            - name: docker_Buildinfoo     # required if autoPublishBuildInfo is true 
 
 #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
             
@@ -102,7 +102,7 @@ pipelines:
           inputSteps:
             - name: test_dockerPush     # required
           outputResources:
-            - name: docker_Buildinfo  
+            - name: docker_Buildinfoo  
             
 #       - name: test_dockerPromote
 #         type: PromoteBuild
