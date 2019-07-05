@@ -17,6 +17,13 @@ resources:
       buildNumber: 1
       buildName: dockertest  
       
+  - name: docker_Buildinfo1
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: dockertest1     
+      
   - name: docker_buildpromote
     type: BuildInfo
     configuration:
@@ -102,7 +109,7 @@ pipelines:
           inputSteps:
             - name: test_dockerPush     # required
           outputResources:
-            - name: docker_Buildinfoo  
+            - name: docker_Buildinfo1  
             
 #       - name: test_dockerPromote
 #         type: PromoteBuild
@@ -110,7 +117,7 @@ pipelines:
 #           nodePool: ubuntu16
 #           targetRepository: test-docker-local
 #           inputResources:
-#             - name: docker_Buildinfo
+#             - name: docker_Buildinfo1
 #           outputResources:
 #             - name: docker_buildpromote
             
