@@ -17,12 +17,12 @@ resources:
       buildNumber: 1
       buildName: dockertest  
       
-#   - name: docker_buildpromote
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       buildNumber: 1
-#       buildName: dockertest
+  - name: docker_buildpromote
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: bindu_arti
+      buildNumber: 1
+      buildName: dockertest
       
 #   - name: docker_releaseBundle
 #     type: ReleaseBundle
@@ -87,22 +87,22 @@ pipelines:
             - name: bindu_arti     # required
           inputSteps:
             - name: test_dockerBuild     # required
-#           outputResources:
-#             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
+          outputResources:
+            - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
 
 #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
             
-#       - name: test_dockerPublish
-#         type: PublishBuildInfo
-#         configuration:
-#           nodePool: ubuntu16
-#           #inherits from bash
-# #           integrations:
-# #             - name: bindu_arti     # required
-#           inputSteps:
-#             - name: test_dockerPush     # required
-#           outputResources:
-#             - name: docker_Buildinfo  
+      - name: test_dockerPublish
+        type: PublishBuildInfo
+        configuration:
+          nodePool: ubuntu16
+          #inherits from bash
+#           integrations:
+#             - name: bindu_arti     # required
+          inputSteps:
+            - name: test_dockerPush     # required
+          outputResources:
+            - name: docker_Buildinfo  
             
 #       - name: test_dockerPromote
 #         type: PromoteBuild
