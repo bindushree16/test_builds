@@ -1,77 +1,70 @@
 resources:
-  - name: dockerbuild_testdocu
+  - name: dockerbuild1
     type: GitRepo
     configuration:
       path: bindushree16/test_builds
       gitProvider: bindu_github
 #       branches:
-#         include: dockerbuild
-#      buildOn:
-#         commit: false
-#      sha: master  
+#         include: docker
+      buildOn:
+         commit: false
+      sha: master
       
-  - name: docker_Buildinfoo
+  - name: docker_Build1
     type: BuildInfo
     configuration:
-      sourceArtifactory: bindu_arti
+      sourceArtifactory: art
       buildNumber: 1
       buildName: dockertest  
       
-  - name: docker_Buildinfo1
+  - name: docker_build_promote1
     type: BuildInfo
     configuration:
-      sourceArtifactory: bindu_arti
-      buildNumber: 1
-      buildName: dockertest1     
-      
-  - name: docker_buildpromote
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: bindu_arti
+      sourceArtifactory: art
       buildNumber: 1
       buildName: dockertest
       
-  - name: docker_releaseBundle
+  - name: docker_release_Bundle1
     type: ReleaseBundle
     configuration:
-      sourceArtifactory: bindu_arti
-      name: test_1
+      sourceDistribution: dist
+      name: test-docker-local
       version: v1.0  
       
-#   - name: docker_releaseBundle2
-#     type: ReleaseBundle
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       name: dockertest
-#       version: foo
-#       isSigned: false     
+  - name: docker_release_Bundle2
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: dist
+      name: test-docker-local
+      version: v1.0
+      isSigned: false     
 
-#   - name: docker_distribution
-#     type: DistributionRule
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       cityName: "*"
-#       serviceName: "*"
-#       siteName: "*"
-#       countryCodes:
-#         - CN
+  - name: docker_distribution1
+    type: DistributionRule
+    configuration:
+      sourceDistribution: dist
+      cityName: "*"
+      serviceName: "*"
+      siteName: "*"
+      countryCodes:
+        - IN
 
 pipelines: 
-  - name: pipoo
+  - name: docker
     steps:
-      - name: test_dockerBuild
+      - name: dockerBuild
         type: DockerBuild
         configuration:
           nodePool: ubuntu16
           # for docker:
           dockerFileLocation: . # required
           dockerFileName: Dockerfile     # required
-          dockerImageName: 34.66.107.45:8081/docker-stage-local/bindu  # required 
-          dockerImageTag: myImg_$pipeline_name.$run_number   # required
+          dockerImageName: '34.66.107.45:8081/docker-stage-local/vijay'  # required 
+          dockerImageTag: myImg_$pipeline_name.$run_number #myimage_$pipeline_name.$run_number   # required
           integrations:
-            - name: bindu_arti
+            - name: art
           inputResources:
-            - name: dockerbuild_testdocu    # required
+            - name: dockerbuild1    # required
 #             - artifactoryFileSpec      # optional
 #             - my_docker_image      # optional if base image is private
         execution:
@@ -80,60 +73,60 @@ pipelines:
             - docker images 
             - printenv
             - ls -la
-            - pushd $res_dockerbuild_testdocu_resourcePath
+            - pushd $res_dockerbuild_resourcePath
             - ls -la
           onSuccess:
             - docker images  
 
-      - name: test_dockerPush
+      - name: dockerPush
         type: DockerPush
         configuration:
           nodePool: ubuntu16
-          targetRepository: docker-stage-local  #required
+          targetRepository: test-docker-local  #required
           integrations:
-            - name: bindu_arti     # required
+            - name: art    # required
           inputSteps:
-            - name: test_dockerBuild     # required
-          outputResources:
-            - name: docker_Buildinfoo     # required if autoPublishBuildInfo is true 
+            - name: dockerBuild     # required
+#           outputResources:
+#             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
 
 #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
             
-      - name: test_dockerPublish
+      - name: dockerPublish
         type: PublishBuildInfo
         configuration:
           nodePool: ubuntu16
           #inherits from bash
 #           integrations:
-#             - name: bindu_arti     # required
+#             - name: vijay_artifactory     # required
           inputSteps:
-            - name: test_dockerPush     # required
+            - name: dockerPush     # required
           outputResources:
-            - name: docker_Buildinfo1  
+            - name: docker_Build  
             
-      - name: test_dockerPromote
+      - name: dockerPromote
         type: PromoteBuild
         configuration:
           nodePool: ubuntu16
           targetRepository: test-docker-local
           inputResources:
-            - name: docker_Buildinfo1
+            - name: docker_Build1
           outputResources:
-            - name: docker_buildpromote 
+            - name: docker_build_promote1
             
-      - name: test_dockerCreatebundle
+      - name: dockerCreatebundle
         type: CreateReleaseBundle
         configuration:
           nodePool: ubuntu16
-          releaseBundleName: test_new_releaseb
-          releaseBundleVersion: v1.5
+          releaseBundleName: test-docker-local
+          releaseBundleVersion: v2.0.20
           dryRun: false
           sign: false
           description: "testdocker description"
           inputResources:
-            - name: docker_buildpromote
+            - name: docker_build_promote1
           outputResources:
-            - name: docker_releaseBundle
+            - name: docker_release_Bundle1
           releaseNotes:
             syntax: markdown
             content: |
@@ -141,65 +134,233 @@ pipelines:
                 * Bullet
                 * Points       
                  
-#       - name: test_dockerSign
-#         type: SignReleaseBundle
-#         configuration:
-#           inputResources:
-#             - name: docker_releaseBundle
-#           outputResources:
-#             - name: docker_releaseBundle2
+      - name: dockerSign
+        type: SignReleaseBundle
+        configuration:
+          inputResources:
+            - name: docker_release_Bundle1
+          outputResources:
+            - name: docker_release_Bundle2
             
-#       - name: test_dockerDistribute
-#         type: DistributeReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           dryRun: false
-#           inputResources:
-#             - name: docker_distribution
-#             - name: docker_releaseBundle2       
- 
+      - name: dockerDistribute
+        type: DistributeReleaseBundle
+        configuration:
+          dryRun: false
+          inputResources:
+            - name: docker_distribution1
+            - name: docker_release_Bundle2
+          integrations: 
+            - name: dist             
+
+
+
+
+
+
 
 
 # resources:
-#   - name: gitResource1
+#   - name: dockerbuild_testdocu
 #     type: GitRepo
-# #     repoPath: bindushree16/test_c7java
 #     configuration:
+#       path: bindushree16/test_builds
 #       gitProvider: bindu_github
-#       path: bindushree16/test_c7java
-#       branches:
-#         only: master
-#       buildOn:
-#          commit: false  
-#     version:
-#       sha: master
+# #       branches:
+# #         include: dockerbuild
+# #      buildOn:
+# #         commit: false
+# #      sha: master  
       
-# pipelines:
-#   - name: pipeline1
+#   - name: docker_Buildinfoo
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       buildNumber: 1
+#       buildName: dockertest  
+      
+#   - name: docker_Buildinfo1
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       buildNumber: 1
+#       buildName: dockertest1     
+      
+#   - name: docker_buildpromote
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       buildNumber: 1
+#       buildName: dockertest
+      
+#   - name: docker_releaseBundle
+#     type: ReleaseBundle
+#     configuration:
+#       sourceArtifactory: bindu_arti
+#       name: test_1
+#       version: v1.0  
+      
+# #   - name: docker_releaseBundle2
+# #     type: ReleaseBundle
+# #     configuration:
+# #       sourceArtifactory: bindu_arti
+# #       name: dockertest
+# #       version: foo
+# #       isSigned: false     
+
+# #   - name: docker_distribution
+# #     type: DistributionRule
+# #     configuration:
+# #       sourceArtifactory: bindu_arti
+# #       cityName: "*"
+# #       serviceName: "*"
+# #       siteName: "*"
+# #       countryCodes:
+# #         - CN
+
+# pipelines: 
+#   - name: pipoo
 #     steps:
-#       - name: test1
-#         type: Bash
+#       - name: test_dockerBuild
+#         type: DockerBuild
 #         configuration:
-#           nodePool: bindu_testnode
+#           nodePool: ubuntu16
+#           # for docker:
+#           dockerFileLocation: . # required
+#           dockerFileName: Dockerfile     # required
+#           dockerImageName: 34.66.107.45:8081/docker-stage-local/bindu  # required 
+#           dockerImageTag: myImg_$pipeline_name.$run_number   # required
+#           integrations:
+#             - name: bindu_arti
 #           inputResources:
-#             - name: gitResource1
-#           runtime:
-#             type: host
+#             - name: dockerbuild_testdocu    # required
+# #             - artifactoryFileSpec      # optional
+# #             - my_docker_image      # optional if base image is private
 #         execution:
-#           onExecute:
+#           onStart:
 #             - echo "hi"
-            
-#       - name: test2
-#         type: Bash
+#             - docker images 
+#             - printenv
+#             - ls -la
+#             - pushd $res_dockerbuild_testdocu_resourcePath
+#             - ls -la
+#           onSuccess:
+#             - docker images  
+
+#       - name: test_dockerPush
+#         type: DockerPush
 #         configuration:
-#           nodePool: bindu_testnode           
+#           nodePool: ubuntu16
+#           targetRepository: docker-stage-local  #required
+#           integrations:
+#             - name: bindu_arti     # required
 #           inputSteps:
-#             - name: test1  
-#           runtime:
-#             type: image
-#             image:
-#               auto:
-#                 language: java
-#         execution:
-#           onExecute:
-#             - echo "hi"
+#             - name: test_dockerBuild     # required
+#           outputResources:
+#             - name: docker_Buildinfoo     # required if autoPublishBuildInfo is true 
+
+# #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
+            
+#       - name: test_dockerPublish
+#         type: PublishBuildInfo
+#         configuration:
+#           nodePool: ubuntu16
+#           #inherits from bash
+# #           integrations:
+# #             - name: bindu_arti     # required
+#           inputSteps:
+#             - name: test_dockerPush     # required
+#           outputResources:
+#             - name: docker_Buildinfo1  
+            
+#       - name: test_dockerPromote
+#         type: PromoteBuild
+#         configuration:
+#           nodePool: ubuntu16
+#           targetRepository: test-docker-local
+#           inputResources:
+#             - name: docker_Buildinfo1
+#           outputResources:
+#             - name: docker_buildpromote 
+            
+#       - name: test_dockerCreatebundle
+#         type: CreateReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           releaseBundleName: test_new_releaseb
+#           releaseBundleVersion: v1.5
+#           dryRun: false
+#           sign: false
+#           description: "testdocker description"
+#           inputResources:
+#             - name: docker_buildpromote
+#           outputResources:
+#             - name: docker_releaseBundle
+#           releaseNotes:
+#             syntax: markdown
+#             content: |
+#               ## Heading
+#                 * Bullet
+#                 * Points       
+                 
+# #       - name: test_dockerSign
+# #         type: SignReleaseBundle
+# #         configuration:
+# #           inputResources:
+# #             - name: docker_releaseBundle
+# #           outputResources:
+# #             - name: docker_releaseBundle2
+            
+# #       - name: test_dockerDistribute
+# #         type: DistributeReleaseBundle
+# #         configuration:
+# #           nodePool: ubuntu16
+# #           dryRun: false
+# #           inputResources:
+# #             - name: docker_distribution
+# #             - name: docker_releaseBundle2       
+ 
+
+
+# # resources:
+# #   - name: gitResource1
+# #     type: GitRepo
+# # #     repoPath: bindushree16/test_c7java
+# #     configuration:
+# #       gitProvider: bindu_github
+# #       path: bindushree16/test_c7java
+# #       branches:
+# #         only: master
+# #       buildOn:
+# #          commit: false  
+# #     version:
+# #       sha: master
+      
+# # pipelines:
+# #   - name: pipeline1
+# #     steps:
+# #       - name: test1
+# #         type: Bash
+# #         configuration:
+# #           nodePool: bindu_testnode
+# #           inputResources:
+# #             - name: gitResource1
+# #           runtime:
+# #             type: host
+# #         execution:
+# #           onExecute:
+# #             - echo "hi"
+            
+# #       - name: test2
+# #         type: Bash
+# #         configuration:
+# #           nodePool: bindu_testnode           
+# #           inputSteps:
+# #             - name: test1  
+# #           runtime:
+# #             type: image
+# #             image:
+# #               auto:
+# #                 language: java
+# #         execution:
+# #           onExecute:
+# #             - echo "hi"
