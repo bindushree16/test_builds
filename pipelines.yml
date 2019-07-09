@@ -102,7 +102,7 @@ pipelines:
           inputSteps:
             - name: dockerPush     # required
           outputResources:
-            - name: docker_Build  
+            - name: docker_Build1  
             
       - name: dockerPromote
         type: PromoteBuild
