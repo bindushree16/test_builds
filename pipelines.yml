@@ -111,15 +111,15 @@ pipelines:
           outputResources:
             - name: docker_Buildinfo1  
             
-#       - name: test_dockerPromote
-#         type: PromoteBuild
-#         configuration:
-#           nodePool: ubuntu16
-#           targetRepository: test-docker-local
-#           inputResources:
-#             - name: docker_Buildinfo1
-#           outputResources:
-#             - name: docker_buildpromote
+      - name: test_dockerPromote
+        type: PromoteBuild
+        configuration:
+          nodePool: ubuntu16
+          targetRepository: test-docker-local
+          inputResources:
+            - name: docker_Buildinfo1
+          outputResources:
+            - name: docker_buildpromote
             
 #       - name: test_dockerCreatebundle
 #         type: CreateReleaseBundle
