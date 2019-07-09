@@ -31,7 +31,7 @@ resources:
       name: test-docker-local
       version: v1.0  
       
-  - name: docker_release_Bundle2
+  - name: docker_release_Bundle22
     type: ReleaseBundle
     configuration:
       sourceDistribution: dist
@@ -119,7 +119,7 @@ pipelines:
         configuration:
           nodePool: ubuntu16
           releaseBundleName: test-docker-local
-          releaseBundleVersion: v2.0.20
+          releaseBundleVersion: v1.0.11
           dryRun: false
           sign: false
           description: "testdocker description"
@@ -140,7 +140,7 @@ pipelines:
           inputResources:
             - name: docker_release_Bundle1
           outputResources:
-            - name: docker_release_Bundle2
+            - name: docker_release_Bundle22
             
       - name: dockerDistribute
         type: DistributeReleaseBundle
@@ -148,7 +148,7 @@ pipelines:
           dryRun: false
           inputResources:
             - name: docker_distribution1
-            - name: docker_release_Bundle2
+            - name: docker_release_Bundle22
           integrations: 
             - name: dist             
 
