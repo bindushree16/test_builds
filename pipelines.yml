@@ -31,12 +31,12 @@ resources:
       buildNumber: 1
       buildName: dockertest
       
-#   - name: docker_releaseBundle
-#     type: ReleaseBundle
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       name: test_1
-#       version: v1.0  
+  - name: docker_releaseBundle
+    type: ReleaseBundle
+    configuration:
+      sourceArtifactory: bindu_arti
+      name: test_1
+      version: v1.0  
       
 #   - name: docker_releaseBundle2
 #     type: ReleaseBundle
@@ -119,27 +119,27 @@ pipelines:
           inputResources:
             - name: docker_Buildinfo1
           outputResources:
-            - name: docker_buildpromote
+            - name: docker_buildpromote 
             
-#       - name: test_dockerCreatebundle
-#         type: CreateReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           releaseBundleName: test_new_releaseb
-#           releaseBundleVersion: v1.5
-#           dryRun: false
-#           sign: false
-#           description: "testdocker description"
-#           inputResources:
-#             - name: docker_buildpromote
-#           outputResources:
-#             - name: docker_releaseBundle
-#           releaseNotes:
-#             syntax: markdown
-#             content: |
-#               ## Heading
-#                 * Bullet
-#                 * Points       
+      - name: test_dockerCreatebundle
+        type: CreateReleaseBundle
+        configuration:
+          nodePool: ubuntu16
+          releaseBundleName: test_new_releaseb
+          releaseBundleVersion: v1.5
+          dryRun: false
+          sign: false
+          description: "testdocker description"
+          inputResources:
+            - name: docker_buildpromote
+          outputResources:
+            - name: docker_releaseBundle
+          releaseNotes:
+            syntax: markdown
+            content: |
+              ## Heading
+                * Bullet
+                * Points       
                  
 #       - name: test_dockerSign
 #         type: SignReleaseBundle
