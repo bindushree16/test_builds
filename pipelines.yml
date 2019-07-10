@@ -117,7 +117,7 @@ pipelines:
            - printenv
        configuration:
          nodePool: ubuntu16       
-         targetRepository: generic-local
+         targetRepository: test-gradle-local
          copy: true
          integrations:
            - name: art
