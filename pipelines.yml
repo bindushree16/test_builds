@@ -146,7 +146,7 @@ pipelines:
          description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
 
          releaseBundleName: test-gradle-local 
-         releaseBundleVersion: v0.0.12
+         releaseBundleVersion: v$run_number.0.11
          sign: false
          inputResources:
            - name: promoted_build_info_gradle1
