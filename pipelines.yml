@@ -1,366 +1,202 @@
 resources:
-  - name: dockerbuild1
-    type: GitRepo
-    configuration:
-      path: bindushree16/test_builds
-      gitProvider: bindu_github
-#       branches:
-#         include: docker
-      buildOn:
-         commit: false
-      sha: master
-      
-  - name: docker_Build1
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: art
-      buildNumber: 1
-      buildName: dockertest  
-      
-  - name: docker_build_promote1
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: art
-      buildNumber: 1
-      buildName: dockertest
-      
-  - name: docker_release_Bundle1
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: dist
-      name: test-docker-local
-      version: v1.0  
-      
-  - name: docker_release_Bundle22
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: dist
-      name: test-docker-local
-      version: v1.0
-      isSigned: false     
+ - name: gradlebuild
+   type: GitRepo
+   configuration:
+     gitProvider: bindu_github
+     path: bindushree16/project-examples
+     
+ - name: build_info_gradle1
+   type: BuildInfo
+   configuration:
+     sourceArtifactory: art
+     buildName: full-gradle-native
+     buildNumber: 1
+     
+ - name: promoted_build_info_gradle1
+   type: BuildInfo
+   configuration:
+     sourceArtifactory: art
+     buildName: promotoed-full-gradle-native
+     buildNumber: 1
+     
+ - name: unsigned_release_bundle_gradle1
+   type: ReleaseBundle
+   configuration:
+     sourceDistribution: dist
+     name: unsigned_release_bundle_gradle
+     version: v0.0.1
+     isSigned: false
+     
+ - name: signed_release_bundle_gradle1
+   type: ReleaseBundle
+   configuration:
+     sourceDistribution: dist
+     name: signed_release_bundle_gradle
+     version: v1.0.0
+     isSigned: true
+     
+ - name: distribution_rule_gradle1
+   type: DistributionRule
+   configuration:
+     sourceDistribution: dist
+     cityName: "*"
+     serviceName: "*"
+     siteName: "*"
+     countryCodes:
+       - IN
+     
+pipelines:
+ - name: gradletest_pipeline
+   steps:
+     - name: gradle_buildstep
+       type: GradleBuild
+       configuration:
+         nodePool: ubuntu16        
+         gradleCommand: clean artifactoryPublish -b build.gradle
+         sourceLocation: gradle-examples/gradle-example-minimal
+         configFileLocation: .
+         configFileName: gradle-art-config
+         inputResources:
+           - name: gradlebuild
+         integrations:
+           - name: art
+         runtime:            
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master
+       execution:
+         onStart:
+           - javac -version
+           - gradle --version
+           - _set_jdk openjdk8
+           - javac -version
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+           
+     - name: publish_build_info_gradle
+       type: PublishBuildInfo
+       execution:
+         onStart:
+           - printenv
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+       configuration:
+         nodePool: ubuntu16       
+         inputSteps:
+           - name: gradle_buildstep
+         outputResources:
+           - name: build_info_gradle1
+         runtime:
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master
+               
+               
+     - name: promote_build_info_gradle
+       type: PromoteBuild
+       execution:
+         onStart:
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+           - printenv
+       configuration:
+         nodePool: ubuntu16       
+         targetRepository: generic-local
+         copy: true
+         integrations:
+           - name: art
+         inputResources:
+           - name: build_info_gradle1
+         outputResources:
+           - name: promoted_build_info_gradle1
+         runtime:
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master
+               
+     - name: release_gradle
+       type: CreateReleaseBundle # needs admin access permission in JFrog Artifactory
+       execution:
+         onStart:
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+       configuration:
+         dryRun: false
+         description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
 
-  - name: docker_distribution1
-    type: DistributionRule
-    configuration:
-      sourceDistribution: dist
-      cityName: "*"
-      serviceName: "*"
-      siteName: "*"
-      countryCodes:
-        - IN
+         releaseBundleName: test-gradle-local 
+         releaseBundleVersion: v0.0.8
+         sign: false
+         inputResources:
+           - name: promoted_build_info_gradle1
+         outputResources:
+           - name: unsigned_release_bundle_gradle1
+         runtime:
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master
+               
 
-pipelines: 
-  - name: docker1
-    steps:
-      - name: dockerBuild
-        type: DockerBuild
-        configuration:
-          nodePool: ubuntu16
-          # for docker:
-          dockerFileLocation: . # required
-          dockerFileName: Dockerfile     # required
-          dockerImageName: '34.66.107.45:8081/docker-stage-local/nava'  # required 
-          dockerImageTag: myImg_$pipeline_name.$run_number #myimage_$pipeline_name.$run_number   # required
-          integrations:
-            - name: art
-          inputResources:
-            - name: dockerbuild1    # required
-#             - artifactoryFileSpec      # optional
-#             - my_docker_image      # optional if base image is private
-        execution:
-          onStart:
-            - echo "hi"
-            - docker images 
-            - printenv
-            - ls -la
-            - pushd $res_dockerbuild1_resourcePath
-            - ls -la
-          onSuccess:
-            - docker images  
-
-      - name: dockerPush
-        type: DockerPush
-        configuration:
-          nodePool: ubuntu16
-          targetRepository: test-docker-local  #required
-          integrations:
-            - name: art    # required
-          inputSteps:
-            - name: dockerBuild     # required
-#           outputResources:
-#             - name: docker_Buildinfo      # required if autoPublishBuildInfo is true 
-
-#for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
+     - name: sign_gradle
+       type: SignReleaseBundle
+       execution:
+         onStart:
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+       configuration:
+         inputResources:
+           - name: unsigned_release_bundle_gradle1
+         outputResources:
+           - name: signed_release_bundle_gradle1
+         runtime:
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master  
+               
+     - name: distribute_signed_release_gradle
+       type: DistributeReleaseBundle
+       execution:
+         onStart:
+           - wget http://833c7dee.ngrok.io/jfrog
+           - chmod +x jfrog
+           - sudo rm /usr/bin/jfrog
+           - mv jfrog /usr/bin/jfrog
+           - which jfrog
+       configuration:
+         dryRun: false
+         inputResources:
+           - name: signed_release_bundle_gradle1
+           - name: distribution_rule_gradle1
+         runtime:
+           type: image
+           image:
+             custom:
+               name: drydock/u16java
+               tag: master         
             
-      - name: dockerPublish
-        type: PublishBuildInfo
-        configuration:
-          nodePool: ubuntu16
-          #inherits from bash
-#           integrations:
-#             - name: vijay_artifactory     # required
-          inputSteps:
-            - name: dockerPush     # required
-          outputResources:
-            - name: docker_Build1  
             
-      - name: dockerPromote
-        type: PromoteBuild
-        configuration:
-          nodePool: ubuntu16
-          targetRepository: test-docker-local
-          inputResources:
-            - name: docker_Build1
-          outputResources:
-            - name: docker_build_promote1
-            
-      - name: dockerCreatebundle
-        type: CreateReleaseBundle
-        configuration:
-          nodePool: ubuntu16
-          releaseBundleName: test-docker-local
-          releaseBundleVersion: v1.0.13
-          dryRun: false
-          sign: false
-          description: "testdocker description"
-          inputResources:
-            - name: docker_build_promote1
-          outputResources:
-            - name: docker_release_Bundle1
-          releaseNotes:
-            syntax: markdown
-            content: |
-              ## Heading
-                * Bullet
-                * Points       
-                 
-      - name: dockerSign
-        type: SignReleaseBundle
-        configuration:
-          inputResources:
-            - name: docker_release_Bundle1
-          outputResources:
-            - name: docker_release_Bundle22
-            
-      - name: dockerDistribute
-        type: DistributeReleaseBundle
-        configuration:
-          dryRun: false
-          inputResources:
-            - name: docker_distribution1
-            - name: docker_release_Bundle22
-          integrations: 
-            - name: dist             
-
-
-
-
-
-
-
-
-# resources:
-#   - name: dockerbuild_testdocu
-#     type: GitRepo
-#     configuration:
-#       path: bindushree16/test_builds
-#       gitProvider: bindu_github
-# #       branches:
-# #         include: dockerbuild
-# #      buildOn:
-# #         commit: false
-# #      sha: master  
-      
-#   - name: docker_Buildinfoo
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       buildNumber: 1
-#       buildName: dockertest  
-      
-#   - name: docker_Buildinfo1
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       buildNumber: 1
-#       buildName: dockertest1     
-      
-#   - name: docker_buildpromote
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       buildNumber: 1
-#       buildName: dockertest
-      
-#   - name: docker_releaseBundle
-#     type: ReleaseBundle
-#     configuration:
-#       sourceArtifactory: bindu_arti
-#       name: test_1
-#       version: v1.0  
-      
-# #   - name: docker_releaseBundle2
-# #     type: ReleaseBundle
-# #     configuration:
-# #       sourceArtifactory: bindu_arti
-# #       name: dockertest
-# #       version: foo
-# #       isSigned: false     
-
-# #   - name: docker_distribution
-# #     type: DistributionRule
-# #     configuration:
-# #       sourceArtifactory: bindu_arti
-# #       cityName: "*"
-# #       serviceName: "*"
-# #       siteName: "*"
-# #       countryCodes:
-# #         - CN
-
-# pipelines: 
-#   - name: pipoo
-#     steps:
-#       - name: test_dockerBuild
-#         type: DockerBuild
-#         configuration:
-#           nodePool: ubuntu16
-#           # for docker:
-#           dockerFileLocation: . # required
-#           dockerFileName: Dockerfile     # required
-#           dockerImageName: 34.66.107.45:8081/docker-stage-local/bindu  # required 
-#           dockerImageTag: myImg_$pipeline_name.$run_number   # required
-#           integrations:
-#             - name: bindu_arti
-#           inputResources:
-#             - name: dockerbuild_testdocu    # required
-# #             - artifactoryFileSpec      # optional
-# #             - my_docker_image      # optional if base image is private
-#         execution:
-#           onStart:
-#             - echo "hi"
-#             - docker images 
-#             - printenv
-#             - ls -la
-#             - pushd $res_dockerbuild_testdocu_resourcePath
-#             - ls -la
-#           onSuccess:
-#             - docker images  
-
-#       - name: test_dockerPush
-#         type: DockerPush
-#         configuration:
-#           nodePool: ubuntu16
-#           targetRepository: docker-stage-local  #required
-#           integrations:
-#             - name: bindu_arti     # required
-#           inputSteps:
-#             - name: test_dockerBuild     # required
-#           outputResources:
-#             - name: docker_Buildinfoo     # required if autoPublishBuildInfo is true 
-
-# #for this DockerPush step it will pushs to artifactory directly without using PublishBuildInfo 
-            
-#       - name: test_dockerPublish
-#         type: PublishBuildInfo
-#         configuration:
-#           nodePool: ubuntu16
-#           #inherits from bash
-# #           integrations:
-# #             - name: bindu_arti     # required
-#           inputSteps:
-#             - name: test_dockerPush     # required
-#           outputResources:
-#             - name: docker_Buildinfo1  
-            
-#       - name: test_dockerPromote
-#         type: PromoteBuild
-#         configuration:
-#           nodePool: ubuntu16
-#           targetRepository: test-docker-local
-#           inputResources:
-#             - name: docker_Buildinfo1
-#           outputResources:
-#             - name: docker_buildpromote 
-            
-#       - name: test_dockerCreatebundle
-#         type: CreateReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           releaseBundleName: test_new_releaseb
-#           releaseBundleVersion: v1.5
-#           dryRun: false
-#           sign: false
-#           description: "testdocker description"
-#           inputResources:
-#             - name: docker_buildpromote
-#           outputResources:
-#             - name: docker_releaseBundle
-#           releaseNotes:
-#             syntax: markdown
-#             content: |
-#               ## Heading
-#                 * Bullet
-#                 * Points       
-                 
-# #       - name: test_dockerSign
-# #         type: SignReleaseBundle
-# #         configuration:
-# #           inputResources:
-# #             - name: docker_releaseBundle
-# #           outputResources:
-# #             - name: docker_releaseBundle2
-            
-# #       - name: test_dockerDistribute
-# #         type: DistributeReleaseBundle
-# #         configuration:
-# #           nodePool: ubuntu16
-# #           dryRun: false
-# #           inputResources:
-# #             - name: docker_distribution
-# #             - name: docker_releaseBundle2       
- 
-
-
-# # resources:
-# #   - name: gitResource1
-# #     type: GitRepo
-# # #     repoPath: bindushree16/test_c7java
-# #     configuration:
-# #       gitProvider: bindu_github
-# #       path: bindushree16/test_c7java
-# #       branches:
-# #         only: master
-# #       buildOn:
-# #          commit: false  
-# #     version:
-# #       sha: master
-      
-# # pipelines:
-# #   - name: pipeline1
-# #     steps:
-# #       - name: test1
-# #         type: Bash
-# #         configuration:
-# #           nodePool: bindu_testnode
-# #           inputResources:
-# #             - name: gitResource1
-# #           runtime:
-# #             type: host
-# #         execution:
-# #           onExecute:
-# #             - echo "hi"
-            
-# #       - name: test2
-# #         type: Bash
-# #         configuration:
-# #           nodePool: bindu_testnode           
-# #           inputSteps:
-# #             - name: test1  
-# #           runtime:
-# #             type: image
-# #             image:
-# #               auto:
-# #                 language: java
-# #         execution:
-# #           onExecute:
-# #             - echo "hi"
