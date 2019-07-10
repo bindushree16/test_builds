@@ -4,6 +4,9 @@ resources:
    configuration:
      gitProvider: bindu_github
      path: bindushree16/project-examples
+#      buildOn:
+#          commit: false
+#       sha: 
      
  - name: build_info_gradle1
    type: BuildInfo
@@ -143,7 +146,7 @@ pipelines:
          description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
 
          releaseBundleName: test-gradle-local 
-         releaseBundleVersion: v0.0.8
+         releaseBundleVersion: v0.0.11
          sign: false
          inputResources:
            - name: promoted_build_info_gradle1
