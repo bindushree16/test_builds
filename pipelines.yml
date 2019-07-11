@@ -145,7 +145,7 @@ pipelines:
          dryRun: false
          description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
          releaseBundleName: gradle_local_bindu 
-         releaseBundleVersion: v1.0
+         releaseBundleVersion: v22.0
          sign: false
          inputResources:
            - name: promoted_build_info_gradle1
