@@ -46,7 +46,7 @@ resources:
      serviceName: "*"
      siteName: "*"
      countryCodes:
-       - IN
+       - GB
      
 pipelines:
  - name: gradletest_pipeline
