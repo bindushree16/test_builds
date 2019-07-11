@@ -142,7 +142,7 @@ pipelines:
            - mv jfrog /usr/bin/jfrog
            - which jfrog
        configuration:
-         dryRun: false
+#          dryRun: false
          description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
 
          releaseBundleName: test-gradle-local 
