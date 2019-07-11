@@ -189,7 +189,7 @@ pipelines:
            - mv jfrog /usr/bin/jfrog
            - which jfrog
        configuration:
-         dryRun: false
+#          dryRun: false
          inputResources:
            - name: signed_release_bundle_gradle1
            - name: distribution_rule_gradle1
