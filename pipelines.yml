@@ -142,11 +142,10 @@ pipelines:
            - mv jfrog /usr/bin/jfrog
            - which jfrog
        configuration:
-#          dryRun: false
+         dryRun: false
          description: "from github.com/scriptnull/jp - develop - full-gradle-native.yml"
-
-         releaseBundleName: test-gradle-local_bindu 
-         releaseBundleVersion: v11.0.11
+         releaseBundleName: gradle_local_bindu 
+         releaseBundleVersion: 1
          sign: false
          inputResources:
            - name: promoted_build_info_gradle1
@@ -159,7 +158,6 @@ pipelines:
                name: drydock/u16java
                tag: master
                
-
      - name: sign_gradle
        type: SignReleaseBundle
        execution:
