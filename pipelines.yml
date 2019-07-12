@@ -4,14 +4,57 @@ resources:
     configuration:
       gitProvider: bindu_github
       path: bindushree16/project-examples
-      sha: mvnbuild
+    branches:
+      include: maven
       
   - name: mvn_Buildinfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: bindu_arti
+      sourceArtifactory: art
       buildNumber: 1
       buildName: mvntest
+      
+#   - name: maven_info
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: art
+#       buildName: maven_scan
+#       buildNumber: 2
+      
+#   - name: maven_promoted
+#     type: BuildInfo
+#     configuration:
+#       sourceArtifactory: art
+#       buildName: maven_promote
+#       buildNumber: 3
+      
+#   - name: unsigned_maven_release
+#     type: ReleaseBundle
+#     configuration:
+#       sourceDistribution: dist
+#       name: mvn_release_bundle_unsigned
+#       version: v0.2.3
+#       isSigned: false
+  
+#   - name: signed_maven_release
+#     type: ReleaseBundle
+#     configuration:
+#       sourceDistribution: dist
+#       name: mvn_release_bundle_signed
+#       version: v1.0.0
+#       isSigned: true
+  
+#   - name: maven_distribution_rule
+#     type: DistributionRule
+#     configuration:
+#       sourceDistribution: dist
+#       cityName: "*"
+#       serviceName: "*"
+#       siteName: "*"
+#       countryCodes:
+# #         - GB #edge node -> intend EU
+#         - IN 
+
 
 pipelines:
   - name: pipeline_mvn
@@ -26,8 +69,7 @@ pipelines:
           inputResources:
             - name: mymvn_project
           integrations:
-            - name: bindu_arti
-            - name: bindu_slack
+            - name: art
           runtime:            
             type: image
             image:
@@ -35,6 +77,13 @@ pipelines:
                 name: drydock/u16java
                 tag: master
                 options: ""
+#           runtime:            
+#             type: image
+#             image:
+#               auto:
+#                 language: java
+#                 versions:
+#                   - openjdk8
         execution:
           onStart:
 #             - apt install default-jdk
@@ -48,16 +97,71 @@ pipelines:
             - mvn --version
           onSuccess:
             - send_notifications bindu_slack
-
+            
       - name: mvnpublish
         type: PublishBuildInfo
         configuration:
-          integrations:
-            - name: bindu_slack
+          nodePool: ubuntu16
           inputSteps:
             - name: mvnBuild_1
           outputResources:
             - name: mvn_Buildinfo
         execution:
           onSuccess:
-            - send_notifications bindu_slack
+            - send_notifications bindu_slack 
+      
+#       - name: mvn_build_scan
+#         type: XrayScan
+#         configuration:
+#           nodePool: ubuntu16
+#           inputResources:
+#             - name: maven 
+#           outputResources:
+#             - name: maven_info
+                
+#       - name: mvn_build_promote
+#         type: PromoteBuild
+#         configuration:
+#           nodePool: ubuntu16
+#           targetRepository: test-maven-local # required 
+#           includeDependencies: true    # default false
+#           status: "promote success" # for mvn_build_promoted" # optional
+#           comment: "maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local" # for mvn_build_promoted" # optional
+#           copy: true #optional - no need to have delete access it wont delete from base repo just moves copy to target repo
+#           inputResources:
+#             - name: maven #required
+#           outputResources:
+#             - name: maven_promoted
+            
+#       - name: mvn_release_bundle_unsigned
+#         type: CreateReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           dryRun: false 
+#           description: "This is to test mvn build"
+#           releaseBundleName: mvn_release_bundle_vijay
+#           releaseBundleVersion: v2.0.0
+#           sign: false
+#           inputResources:
+#             - name: maven_promoted
+#           outputResources:
+#             - name: unsigned_maven_release
+            
+#       - name: signed_release_mvn_bundle
+#         type: SignReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           inputResources:
+#             - name: unsigned_maven_release
+#           outputResources:
+#             - name: signed_maven_release
+            
+#       - name: mvn_distribute_signed_release
+#         type: DistributeReleaseBundle
+#         configuration:
+#           nodePool: ubuntu16
+#           inputResources:
+#             - name: signed_maven_release
+#             - name: maven_distribution_rule     
+            
+            
