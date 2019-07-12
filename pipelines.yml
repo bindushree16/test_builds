@@ -21,7 +21,7 @@ resources:
       buildName: maven_scan
       buildNumber: 2
       
-  - name: maven_promoted
+  - name: mavenbuild_promoted
     type: BuildInfo
     configuration:
       sourceArtifactory: art
@@ -132,7 +132,7 @@ pipelines:
           inputResources:
             - name: maven_infooo #required
           outputResources:
-            - name: maven_promoted
+            - name: mavenbuild_promoted
             
 #       - name: mvn_release_bundle_unsigned
 #         type: CreateReleaseBundle
