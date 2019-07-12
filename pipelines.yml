@@ -130,7 +130,7 @@ pipelines:
           comment: "maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local" # for mvn_build_promoted" # optional
           copy: true #optional - no need to have delete access it wont delete from base repo just moves copy to target repo
           inputResources:
-            - name: maven_infooo #required
+            - name: mvn_Buildinfo #required
           outputResources:
             - name: mavenbuild_promoted
             
