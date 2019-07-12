@@ -28,7 +28,7 @@ resources:
       buildName: maven_promote
       buildNumber: 3
       
-  - name: unsigned_maven_release
+  - name: unsigned_mavenbuild_release
     type: ReleaseBundle
     configuration:
       sourceDistribution: dist
@@ -36,7 +36,7 @@ resources:
       version: v0.2.3
       isSigned: false
   
-  - name: signed_maven_release
+  - name: signed_mavenbuild_release
     type: ReleaseBundle
     configuration:
       sourceDistribution: dist
@@ -44,7 +44,7 @@ resources:
       version: v1.0.0
       isSigned: true
   
-  - name: maven_distribution_rule
+  - name: mavenbuild_distribution_rule
     type: DistributionRule
     configuration:
       sourceDistribution: dist
@@ -146,23 +146,23 @@ pipelines:
           inputResources:
             - name: mavenbuild_promoted
           outputResources:
-            - name: unsigned_maven_release
+            - name: unsigned_mavenbuild_release
             
       - name: signed_release_mvn_bundle
         type: SignReleaseBundle
         configuration:
           nodePool: ubuntu16
           inputResources:
-            - name: unsigned_maven_release
+            - name: unsigned_mavenbuild_release
           outputResources:
-            - name: signed_maven_release
+            - name: signed_mavenbuild_release
             
       - name: mvn_distribute_signed_release
         type: DistributeReleaseBundle
         configuration:
           nodePool: ubuntu16
           inputResources:
-            - name: signed_maven_release
-            - name: maven_distribution_rule     
+            - name: signed_mavenbuild_release
+            - name: mavenbuild_distribution_rule     
             
             
