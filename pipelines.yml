@@ -161,7 +161,7 @@ pipelines:
         type: DistributeReleaseBundle
         configuration:
           nodePool: ubuntu16
-          dryRun: false 
+          dryRun: false ## if this is true (by defult) then the Statu is "Not distributed". If that is false then Statu is "Completed"
           inputResources:
             - name: signed_mavenbuild_release
             - name: mavenbuild_distribution_rule     
