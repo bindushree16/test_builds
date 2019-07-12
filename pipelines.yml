@@ -140,7 +140,7 @@ pipelines:
           nodePool: ubuntu16
           dryRun: false 
           description: "This is to test mvn build"
-          releaseBundleName: mvn_release_bundle_vijay
+          releaseBundleName: mvn_release_bundle_bindu
           releaseBundleVersion: v0.11.0
           sign: false
           inputResources:
