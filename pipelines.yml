@@ -71,20 +71,20 @@ pipelines:
             - name: mymvn_project
           integrations:
             - name: art
-          runtime:            
-            type: image
-            image:
-              custom:
-                name: drydock/u16java
-                tag: master
-                options: ""
 #           runtime:            
 #             type: image
 #             image:
-#               auto:
-#                 language: java
-#                 versions:
-#                   - openjdk8
+#               custom:
+#                 name: drydock/u16java
+#                 tag: master
+#                 options: ""
+          runtime:            
+            type: image
+            image:
+              auto:
+                language: java
+                versions:
+                  - openjdk8
         execution:
           onStart:
 #             - apt install default-jdk
