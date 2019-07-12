@@ -14,12 +14,12 @@ resources:
       buildNumber: 1
       buildName: mvntest
       
-#   - name: maven_info
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: art
-#       buildName: maven_scan
-#       buildNumber: 2
+  - name: maven_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art
+      buildName: maven_scan
+      buildNumber: 2
       
 #   - name: maven_promoted
 #     type: BuildInfo
@@ -111,14 +111,14 @@ pipelines:
           onSuccess:
             - send_notifications bindu_slack 
       
-#       - name: mvn_build_scan
-#         type: XrayScan
-#         configuration:
-#           nodePool: ubuntu16
-#           inputResources:
-#             - name: maven 
-#           outputResources:
-#             - name: maven_info
+      - name: mvn_build_scan
+        type: XrayScan
+        configuration:
+          nodePool: ubuntu16
+          inputResources:
+            - name: maven 
+          outputResources:
+            - name: maven_info
                 
 #       - name: mvn_build_promote
 #         type: PromoteBuild
