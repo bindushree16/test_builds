@@ -62,6 +62,7 @@ pipelines:
       - name: mvnBuild_1
         type: MvnBuild
         configuration:
+          nodePool: ubuntu16
           sourceLocation: ./artifactory-maven-plugin-example
           mvnCommand: clean install -f ./pom.xml
           configFileLocation: .
