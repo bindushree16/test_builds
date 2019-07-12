@@ -14,7 +14,7 @@ resources:
       buildNumber: 1
       buildName: mvntest
       
-  - name: maven_info
+  - name: maven_infooo
     type: BuildInfo
     configuration:
       sourceArtifactory: art
@@ -116,9 +116,9 @@ pipelines:
         configuration:
           nodePool: ubuntu16
           inputResources:
-            - name: maven 
+            - name: mvn_Buildinfo 
           outputResources:
-            - name: maven_info
+            - name: maven_infooo
                 
 #       - name: mvn_build_promote
 #         type: PromoteBuild
