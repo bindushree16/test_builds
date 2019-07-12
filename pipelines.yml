@@ -21,12 +21,12 @@ resources:
       buildName: maven_scan
       buildNumber: 2
       
-#   - name: maven_promoted
-#     type: BuildInfo
-#     configuration:
-#       sourceArtifactory: art
-#       buildName: maven_promote
-#       buildNumber: 3
+  - name: maven_promoted
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art
+      buildName: maven_promote
+      buildNumber: 3
       
 #   - name: unsigned_maven_release
 #     type: ReleaseBundle
@@ -120,19 +120,19 @@ pipelines:
           outputResources:
             - name: maven_infooo
                 
-#       - name: mvn_build_promote
-#         type: PromoteBuild
-#         configuration:
-#           nodePool: ubuntu16
-#           targetRepository: test-maven-local # required 
-#           includeDependencies: true    # default false
-#           status: "promote success" # for mvn_build_promoted" # optional
-#           comment: "maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local" # for mvn_build_promoted" # optional
-#           copy: true #optional - no need to have delete access it wont delete from base repo just moves copy to target repo
-#           inputResources:
-#             - name: maven #required
-#           outputResources:
-#             - name: maven_promoted
+      - name: mvn_build_promote
+        type: PromoteBuild
+        configuration:
+          nodePool: ubuntu16
+          targetRepository: test-maven-local # required 
+          includeDependencies: true    # default false
+          status: "promote success" # for mvn_build_promoted" # optional
+          comment: "maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local. maven build should be promoted from varsha-local" # for mvn_build_promoted" # optional
+          copy: true #optional - no need to have delete access it wont delete from base repo just moves copy to target repo
+          inputResources:
+            - name: maven_infooo #required
+          outputResources:
+            - name: maven_promoted
             
 #       - name: mvn_release_bundle_unsigned
 #         type: CreateReleaseBundle
