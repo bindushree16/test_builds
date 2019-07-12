@@ -111,14 +111,14 @@ pipelines:
           onSuccess:
             - send_notifications bindu_slack 
       
-      - name: mvn_build_scan
-        type: XrayScan
-        configuration:
-          nodePool: ubuntu16
-          inputResources:
-            - name: mvn_Buildinfo 
-          outputResources:
-            - name: maven_infooo
+#       - name: mvn_build_scan
+#         type: XrayScan
+#         configuration:
+#           nodePool: ubuntu16
+#           inputResources:
+#             - name: mvn_Buildinfo 
+#           outputResources:
+#             - name: maven_infooo
                 
       - name: mvn_build_promote
         type: PromoteBuild
