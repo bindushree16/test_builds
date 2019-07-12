@@ -28,32 +28,32 @@ resources:
       buildName: maven_promote
       buildNumber: 3
       
-#   - name: unsigned_maven_release
-#     type: ReleaseBundle
-#     configuration:
-#       sourceDistribution: dist
-#       name: mvn_release_bundle_unsigned
-#       version: v0.2.3
-#       isSigned: false
+  - name: unsigned_maven_release
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: dist
+      name: mvn_release_bundle_unsigned
+      version: v0.2.3
+      isSigned: false
   
-#   - name: signed_maven_release
-#     type: ReleaseBundle
-#     configuration:
-#       sourceDistribution: dist
-#       name: mvn_release_bundle_signed
-#       version: v1.0.0
-#       isSigned: true
+  - name: signed_maven_release
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: dist
+      name: mvn_release_bundle_signed
+      version: v1.0.0
+      isSigned: true
   
-#   - name: maven_distribution_rule
-#     type: DistributionRule
-#     configuration:
-#       sourceDistribution: dist
-#       cityName: "*"
-#       serviceName: "*"
-#       siteName: "*"
-#       countryCodes:
-# #         - GB #edge node -> intend EU
-#         - IN 
+  - name: maven_distribution_rule
+    type: DistributionRule
+    configuration:
+      sourceDistribution: dist
+      cityName: "*"
+      serviceName: "*"
+      siteName: "*"
+      countryCodes:
+#         - GB #edge node -> intend EU
+        - IN 
 
 
 pipelines:
@@ -134,35 +134,35 @@ pipelines:
           outputResources:
             - name: mavenbuild_promoted
             
-#       - name: mvn_release_bundle_unsigned
-#         type: CreateReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           dryRun: false 
-#           description: "This is to test mvn build"
-#           releaseBundleName: mvn_release_bundle_vijay
-#           releaseBundleVersion: v2.0.0
-#           sign: false
-#           inputResources:
-#             - name: maven_promoted
-#           outputResources:
-#             - name: unsigned_maven_release
+      - name: mvn_release_bundle_unsigned
+        type: CreateReleaseBundle
+        configuration:
+          nodePool: ubuntu16
+          dryRun: false 
+          description: "This is to test mvn build"
+          releaseBundleName: mvn_release_bundle_vijay
+          releaseBundleVersion: v0.11.0
+          sign: false
+          inputResources:
+            - name: mavenbuild_promoted
+          outputResources:
+            - name: unsigned_maven_release
             
-#       - name: signed_release_mvn_bundle
-#         type: SignReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           inputResources:
-#             - name: unsigned_maven_release
-#           outputResources:
-#             - name: signed_maven_release
+      - name: signed_release_mvn_bundle
+        type: SignReleaseBundle
+        configuration:
+          nodePool: ubuntu16
+          inputResources:
+            - name: unsigned_maven_release
+          outputResources:
+            - name: signed_maven_release
             
-#       - name: mvn_distribute_signed_release
-#         type: DistributeReleaseBundle
-#         configuration:
-#           nodePool: ubuntu16
-#           inputResources:
-#             - name: signed_maven_release
-#             - name: maven_distribution_rule     
+      - name: mvn_distribute_signed_release
+        type: DistributeReleaseBundle
+        configuration:
+          nodePool: ubuntu16
+          inputResources:
+            - name: signed_maven_release
+            - name: maven_distribution_rule     
             
             
