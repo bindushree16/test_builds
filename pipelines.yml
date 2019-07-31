@@ -62,7 +62,7 @@ pipelines:
           dockerImageName: 34.66.107.45:8081/test-docker-local/bindu  # required 
           dockerImageTag: myImg_$pipeline_name.$run_number   # required
           integrations:
-            - name: bindu_arti
+            - name: art #bindu_arti
           inputResources:
             - name: dockerbuild_testd    # required
 #             - artifactoryFileSpec      # optional
@@ -84,7 +84,7 @@ pipelines:
 #           nodePool: ubuntu16
           targetRepository: test-docker-local  #required
           integrations:
-            - name: bindu_arti     # required
+            - name: art #bindu_arti     # required
           inputSteps:
             - name: test_dockerBuild     # required
           outputResources:
