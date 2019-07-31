@@ -13,14 +13,14 @@ resources:
   - name: docker_Buildinfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: bindu_arti
+      sourceArtifactory: art #bindu_arti
       buildNumber: 1
       buildName: dockertest  
       
   - name: docker_buildpromote
     type: BuildInfo
     configuration:
-      sourceArtifactory: bindu_arti
+      sourceArtifactory: art #bindu_arti
       buildNumber: 1
       buildName: dockertest
       
