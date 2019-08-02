@@ -13,14 +13,14 @@ resources:
   - name: docker_Buildinfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: art #bindu_arti
+      sourceArtifactory: vijay_artifactory #bindu_arti
       buildNumber: 1
       buildName: dockertest  
       
   - name: docker_buildpromote
     type: BuildInfo
     configuration:
-      sourceArtifactory: art #bindu_arti
+      sourceArtifactory: vijay_artifactory #bindu_arti
       buildNumber: 1
       buildName: dockertest
       
@@ -62,7 +62,7 @@ pipelines:
           dockerImageName: 34.66.107.45:8081/test-docker-local/bindu  # required 
           dockerImageTag: myImg_$pipeline_name.$run_number   # required
           integrations:
-            - name: art #bindu_arti
+            - name: vijay_artifactory #bindu_arti
           inputResources:
             - name: dockerbuild_testd    # required
 #             - artifactoryFileSpec      # optional
@@ -84,7 +84,7 @@ pipelines:
           nodePool: ubuntu16
           targetRepository: test-docker-local  #required
           integrations:
-            - name: art #bindu_arti     # required
+            - name: vijay_artifactoryart #bindu_arti     # required
           inputSteps:
             - name: test_dockerBuild     # required
           outputResources:
