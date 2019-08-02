@@ -84,7 +84,7 @@ pipelines:
           nodePool: ubuntu16
           targetRepository: test-docker-local  #required
           integrations:
-            - name: vijay_artifactoryart #bindu_arti     # required
+            - name: vijay_artifactory #bindu_arti     # required
           inputSteps:
             - name: test_dockerBuild     # required
           outputResources:
