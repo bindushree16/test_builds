@@ -27,14 +27,14 @@ resources:
   - name: docker_release_Bundle1
     type: ReleaseBundle
     configuration:
-      sourceDistribution: dist
+      sourceDistribution: test_distribution
       name: test-docker-local
       version: v1.0  
       
   - name: docker_release_Bundle22
     type: ReleaseBundle
     configuration:
-      sourceDistribution: dist
+      sourceDistribution: test_distribution
       name: test-docker-local
       version: v1.0
       isSigned: false     
@@ -42,7 +42,7 @@ resources:
   - name: docker_distribution1
     type: DistributionRule
     configuration:
-      sourceDistribution: dist
+      sourceDistribution: test_distribution
       cityName: "*"
       serviceName: "*"
       siteName: "*"
@@ -150,7 +150,7 @@ pipelines:
             - name: docker_distribution1
             - name: docker_release_Bundle22
           integrations: 
-            - name: dist             
+            - name: test_distribution            
 
 
 
